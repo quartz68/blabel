@@ -96,4 +96,4 @@ def test_several_items_per_page():
     assert 28_000 > len(data) > 15_000
 
 if __name__=="__main__":
-    test_qrcode_and_date(".")
+    test_qrcode_and_date("")
