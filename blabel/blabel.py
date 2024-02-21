@@ -2,7 +2,8 @@ import os
 from io import BytesIO
 
 import jinja2
-import pdfkit
+from weasyprint import HTML
+from xhtml2pdf import pisa
 from . import label_tools
 from . import tools
 
@@ -43,9 +44,12 @@ def write_pdf(html, target=None, base_url=None, extra_stylesheets=()):
       overwrite default styles.
     """
     if target in [None, "@memory"]:
-        return pdfkit.from_string(input=html, css=extra_stylesheets[0])
+        with BytesIO() as buffer:
+            pisa.CreatePDF(src=html, dest=buffer, path=base_url, default_css=open(extra_stylesheets[0]).read()) # type: ignore
+            pdf_data = buffer.getvalue()
+        return pdf_data
     else:
-        return pdfkit.from_string(input=html, output_path=target, css=extra_stylesheets[0])
+        pisa.CreatePDF(src=html, dest=open(target,"wb"), path=base_url, default_css=open(extra_stylesheets[0]).read()) # type: ignore
 
 
 class LabelWriter:
