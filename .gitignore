@@ -54,3 +54,4 @@ examples/features/downloaded_data
 .coverage
 docs/_build
 .vscode
+*.code-workspace
