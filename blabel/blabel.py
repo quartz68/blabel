@@ -49,7 +49,7 @@ def write_pdf(html, target=None, base_url=None, extra_stylesheets=()):
             pdf_data = buffer.getvalue()
         return pdf_data
     else:
-        pisa.CreatePDF(src=html, dest=open(target."w"), path=base_url, default_css=open(extra_stylesheets[0]).read()) # type: ignore
+        pisa.CreatePDF(src=html, dest=open(target,"w"), path=base_url, default_css=open(extra_stylesheets[0]).read()) # type: ignore
 
 
 class LabelWriter:
