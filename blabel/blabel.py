@@ -3,6 +3,7 @@ from io import BytesIO
 
 import jinja2
 from weasyprint import HTML
+from xhtml2pdf import pisa
 from . import label_tools
 from . import tools
 
@@ -42,14 +43,13 @@ def write_pdf(html, target=None, base_url=None, extra_stylesheets=()):
       List of paths to other ".css" files used to define new styles or
       overwrite default styles.
     """
-    weasy_html = HTML(string=html, base_url=base_url)
     if target in [None, "@memory"]:
         with BytesIO() as buffer:
-            weasy_html.write_pdf(buffer, stylesheets=extra_stylesheets)
+            pisa.CreatePDF(src=html, dest=buffer, path=base_url, default_css=open(extra_stylesheets[0]).read()) # type: ignore
             pdf_data = buffer.getvalue()
         return pdf_data
     else:
-        weasy_html.write_pdf(target, stylesheets=extra_stylesheets)
+        pisa.CreatePDF(src=html, dest=target, path=base_url, default_css=open(extra_stylesheets[0]).read()) # type: ignore
 
 
 class LabelWriter:
